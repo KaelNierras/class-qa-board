@@ -7,6 +7,7 @@ import { Session } from '@/types/index';
 import { createClient } from '@/utils/supabase/client';
 import moments from 'moment';
 import useUserData from '@/lib/user-data';
+import { useRouter } from 'next/navigation';
 
 const sort = "title"
 const order = "asc"
@@ -15,6 +16,7 @@ const SessionsPage = () => {
   const supabase = createClient();
   const [sessions, setSessions] = useState<{ data: Session[] }>({ data: [] });
   const user = useUserData();
+  const router = useRouter();
 
   useEffect(() => {
     if (!user) return;
@@ -68,8 +70,7 @@ const SessionsPage = () => {
             <div className="flex space-x-2">
               <Button
                 onClick={() => {
-                  // Handle view action
-                  console.log(`Viewing session with ID: ${row.id}`);
+                  router.push(`/sessions/${row.id}`);
                 }}>
                 View
               </Button>
