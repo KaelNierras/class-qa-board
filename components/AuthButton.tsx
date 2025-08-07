@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import { signout } from "@/lib/auth-actions";
 
-const LoginButton = () => {
+const AuthButton = () => {
   const [user, setUser] = useState<any>(null);
   const router = useRouter();
   const supabase = createClient();
@@ -20,14 +20,25 @@ const LoginButton = () => {
   }, []);
   if (user) {
     return (
-      <Button
-        onClick={() => {
-          signout();
-          setUser(null);
-        }}
-      >
-        Log out
-      </Button>
+      <>
+        <Button
+          variant="outline"
+          className="mr-2"
+          onClick={() => {
+            router.push("/dashboard");
+          }}
+        >
+          Dashboard
+        </Button>
+        <Button
+          onClick={() => {
+            signout();
+            setUser(null);
+          }}
+        >
+          Log out
+        </Button>
+      </>
     );
   }
   return (
@@ -42,4 +53,4 @@ const LoginButton = () => {
   );
 };
 
-export default LoginButton;
+export default AuthButton;
