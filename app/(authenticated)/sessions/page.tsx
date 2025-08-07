@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button';
 import React, { useEffect, useState } from 'react'
 import { Session } from '@/types/index';
 import { createClient } from '@/utils/supabase/client';
+import moments from 'moment';
+import useUserData from '@/lib/user-data';
 
 const sort = "title"
 const order = "asc"
@@ -12,10 +14,16 @@ const order = "asc"
 const SessionsPage = () => {
   const supabase = createClient();
   const [sessions, setSessions] = useState<{ data: Session[] }>({ data: [] });
+  const user = useUserData();
 
   useEffect(() => {
+    if (!user) return;
+
     const fetchSessions = async () => {
-      const { data, error } = await supabase.from('sessions').select('*');
+      const { data, error } = await supabase
+        .from('sessions')
+        .select()
+        .eq('created_by', user.id);
       if (error) {
         console.error('Error fetching sessions:', error);
       } else {
@@ -23,12 +31,28 @@ const SessionsPage = () => {
       }
     };
 
+    const channel = supabase.channel('public:sessions')
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'sessions' },
+        (payload) => {
+          setSessions((prev) => ({
+            data: [...prev.data, payload.new as Session],
+          }));
+        }
+      )
+      .subscribe();
+
     fetchSessions();
-  }, []);
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [user]);
+  
   const columns: { key: keyof Session; label: string; sortable?: boolean; render?: (value: any, row?: Session) => string | JSX.Element }[] = [
-    { key: "title", label: "Title", sortable: false },
-    { key: "created_at", label: "Created At", sortable: false },
-    { key: "created_by", label: "Created By", sortable: false },
+    { key: "title", label: "Title", sortable: false, render: (value) => <span className="font-semibold">{value}</span> },
+    { key: "created_at", label: "Created At", sortable: false, render: (value) => <span className="text-xs text-gray-500">{moments(value).format('LLL')}</span> },
   ];
   return (
     <div>
