@@ -9,7 +9,6 @@ export function useUserData() {
         const fetchUser = async () => {
             const { data: { user } } = await supabase.auth.getUser();
             setUser(user as User);
-            console.log('Fetched user data:', user);
         };
         fetchUser();
     }, []);

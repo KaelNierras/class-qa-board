@@ -4,23 +4,34 @@ import React, { useState } from 'react'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { PlusCircleIcon } from 'lucide-react'
-import { useRouter } from 'next/navigation'
+import { createClient } from '@/utils/supabase/client'
+import useUserData from '@/lib/user-data'
 
 const QuickCreateSessionModal = () => {
     const [sessionTitle, setSessionTitle] = useState('')
-    const router = useRouter()
+    const supabase = createClient();
+    const [open, setOpen] = useState(false);
+    const user = useUserData();
 
-    const handleCreate = () => {
-        // Redirect to the session page
-        router.push(`/session`)
+    const handleCreate = async () => {
+        const { data, error } = await supabase
+            .from('sessions')
+            .insert([{ title: sessionTitle,
+                created_by: user?.id,
+             }])
+            .select()
+            .single();
+
+        if (error) {
+            alert(error.message);
+            return;
+        }
+        setSessionTitle('');
+        setOpen(false);
     }
 
     return (
-        <Dialog onOpenChange={(open) => {
-            if (!open) {
-                setSessionTitle('')
-            }
-        }}>
+        <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger className='flex items-center gap-2 p-2 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 active:bg-primary/90 w-full'>
                 <PlusCircleIcon />
                 <span>Quick Create</span>
