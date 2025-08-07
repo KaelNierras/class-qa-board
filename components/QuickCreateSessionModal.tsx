@@ -6,9 +6,11 @@ import { Button } from '@/components/ui/button'
 import { PlusCircleIcon } from 'lucide-react'
 import { createClient } from '@/utils/supabase/client'
 import useUserData from '@/lib/user-data'
+import { useRouter } from 'next/navigation'
 
 const QuickCreateSessionModal = () => {
     const [sessionTitle, setSessionTitle] = useState('')
+    const router = useRouter()
     const supabase = createClient();
     const [open, setOpen] = useState(false);
     const user = useUserData();
@@ -21,10 +23,14 @@ const QuickCreateSessionModal = () => {
              }])
             .select()
             .single();
-
         if (error) {
             alert(error.message);
             return;
+        }
+
+        if (data) {
+            // Redirect to the newly created session page
+            router.push(`/sessions/${data.id}`);
         }
         setSessionTitle('');
         setOpen(false);

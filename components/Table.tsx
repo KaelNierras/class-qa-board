@@ -78,7 +78,7 @@ const Table = <T,>({ columns, data, onSort, sortColumn, sortOrder, onRowClick, a
                                 </>
                             ) : (
                                 <tr>
-                                    <td colSpan={columns.length} className="px-3 py-4 text-center text-sm text-gray-500">
+                                    <td colSpan={actions ? columns.length + 1 : columns.length} className="px-3 py-4 text-center text-sm text-gray-500">
                                         No data available
                                     </td>
                                 </tr>

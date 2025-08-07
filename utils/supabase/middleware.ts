@@ -53,14 +53,16 @@ export async function updateSession(request: NextRequest) {
       },
     }
   )
-
   // Check if the user is authenticated
-  // If not, redirect to the login page
   const { data: { user } } = await supabase.auth.getUser()
-  const allowedPaths = ['/', '/login', '/signup']
   const currentPath = request.nextUrl.pathname
 
-  if (!user && !allowedPaths.includes(currentPath)) {
+  // Define allowed paths, including dynamic /sessions/:sessionId/ask
+  const allowedPaths = ['/', '/login', '/signup']
+  const isSessionAskPath = /^\/sessions\/[^\/]+\/ask\/?$/.test(currentPath)
+  const isAllowed = allowedPaths.includes(currentPath) || isSessionAskPath
+
+  if (!user && !isAllowed) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
 
