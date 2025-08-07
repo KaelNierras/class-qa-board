@@ -1,6 +1,5 @@
 'use client';
 
-import { Card, CardContent,CardHeader } from '@/components/ui/card';
 import { Question } from '@/types';
 import { createClient } from '@/utils/supabase/client';
 import { TimerIcon } from 'lucide-react';
@@ -9,6 +8,7 @@ import { useParams } from 'next/navigation';
 import React, { useEffect } from 'react'
 import { useState } from 'react';
 import PreviewModal from './components/PreviewModal';
+import QuestionCard from './components/QuestionCard';
 
 const SessionPage = () => {
     const supabase = createClient();
@@ -71,26 +71,14 @@ const SessionPage = () => {
                     No questions have been asked yet.
                 </div>
             ) : (
-                questions.data.map((q: Question) => (
-                    <Card
-                        onClick={() => setPreviewQuestion(q)}
+                questions.data.map((q: Question, index: number) => (
+                    <QuestionCard
                         key={q.id}
-                        className="mb-6 rounded-2xl shadow-none border-0 bg-gradient-to-b from-secondary/10 to-primary/10 p-0"
-                    >
-                        <CardHeader className="pb-0">
-                            <div className="text-xs text-primary font-medium mb-2">
-                                Question {questions.data.indexOf(q) + 1} of {questions.data.length}
-                            </div>
-                            <div className="text-xs text-primary/70 mb-2">
-                                Asked by: {q.created_by || 'Unknown'}
-                            </div>
-                        </CardHeader>
-                        <CardContent className="pt-0 pb-6">
-                            <div className="text-xl font-semibold text-primary leading-snug mb-2">
-                                {q.text}
-                            </div>
-                        </CardContent>
-                    </Card>
+                        question={q}
+                        setPreviewQuestion={setPreviewQuestion}
+                        index={index}
+                        total={questions.data.length}
+                    />
                 ))
             )}
         </>
