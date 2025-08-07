@@ -7,6 +7,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { createClient } from '@/utils/supabase/client'
 import { Input } from '@/components/ui/input'
+import { Session } from '@/types'
 
 const AskPage = () => {
     const supabase = createClient();
@@ -15,12 +16,47 @@ const AskPage = () => {
     const [name, setName] = React.useState('')
     const [question, setQuestion] = React.useState('')
     const [submitted, setSubmitted] = React.useState(false)
+    const [session, setSession] = React.useState<{ data: Session | null }>({ data: null });
 
     // Load name from localStorage on mount
     useEffect(() => {
         const storedName = localStorage.getItem('askerName')
         if (storedName) setName(storedName)
-    }, [])
+    }, []);
+
+    // Fetch session data
+    useEffect(() => {
+        const fetchSession = async () => {
+            const { data, error } = await supabase
+                .from('sessions')
+                .select()
+                .eq('id', sessionId)
+                .single();
+            if (error) {
+                console.error('Error fetching session:', error);
+            } else {
+                setSession({ data });
+            }
+        };
+
+        fetchSession();
+
+        const channel = supabase.channel('public:sessions')
+            .on(
+                'postgres_changes',
+                { event: 'UPDATE', schema: 'public', table: 'sessions' },
+                (payload) => {
+                    console.log('Session updated:', payload);
+                    if (payload.new.id === sessionId) {
+                        setSession({ data: payload.new as Session });
+                    }
+                }
+            );
+
+        return () => {
+            channel.unsubscribe();
+        };
+    }, []);
 
     // Store name in localStorage on change
     const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,6 +83,10 @@ const AskPage = () => {
         setSubmitted(true);
     }
 
+    useEffect(() => {
+        console.log('Session data:', session.data);
+    }, [session.data]);
+
     return (
         <div className="flex flex-col items-center justify-center min-h-screen">
             <div className="w-full max-w-md">
@@ -55,7 +95,12 @@ const AskPage = () => {
                         <CardTitle>Ask a Question</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        {submitted ? (
+                        {session.data && !session.data.is_open ? (
+                            <div className="text-center py-8">
+                                <div className="text-lg font-semibold mb-2">This session is closed.</div>
+                                <div className="text-gray-500 mb-5">You can no longer submit questions.</div>
+                            </div>
+                        ) : submitted ? (
                             <div className="text-center py-8">
                                 <div className="text-lg font-semibold mb-2">Your question has been submitted!</div>
                                 <div className="text-gray-500 mb-5">Thank you for your question.</div>
