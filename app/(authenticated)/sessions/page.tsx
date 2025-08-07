@@ -2,36 +2,29 @@
 
 import Table from '@/components/Table'
 import { Button } from '@/components/ui/button';
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Session } from '@/types/index';
-
-const sessions = {
-  data: [
-    {
-      id: "a1b2c3d4-e5f6-7890-abcd-1234567890ab",
-      title: "Math Q&A Session",
-      created_at: "2024-06-01T10:00:00Z",
-      created_by: "user-1111-2222-3333-4444",
-    },
-    {
-      id: "b2c3d4e5-f6a7-8901-bcde-2345678901bc",
-      title: "Science Discussion",
-      created_at: "2024-06-02T14:30:00Z",
-      created_by: "user-5555-6666-7777-8888",
-    },
-    {
-      id: "c3d4e5f6-a7b8-9012-cdef-3456789012cd",
-      title: "History Review",
-      created_at: "2024-06-03T09:15:00Z",
-      created_by: "user-9999-aaaa-bbbb-cccc",
-    },
-  ],
-}
+import { createClient } from '@/utils/supabase/client';
 
 const sort = "title"
 const order = "asc"
 
 const SessionsPage = () => {
+  const supabase = createClient();
+  const [sessions, setSessions] = useState<{ data: Session[] }>({ data: [] });
+
+  useEffect(() => {
+    const fetchSessions = async () => {
+      const { data, error } = await supabase.from('sessions').select('*');
+      if (error) {
+        console.error('Error fetching sessions:', error);
+      } else {
+        setSessions({ data: data as Session[] });
+      }
+    };
+
+    fetchSessions();
+  }, []);
   const columns: { key: keyof Session; label: string; sortable?: boolean; render?: (value: any, row?: Session) => string | JSX.Element }[] = [
     { key: "title", label: "Title", sortable: false },
     { key: "created_at", label: "Created At", sortable: false },
