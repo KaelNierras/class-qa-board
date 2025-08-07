@@ -106,19 +106,21 @@ const SessionPage = () => {
                     }
                 </div>
                 {questions.data.length === 0 ? (
-                    <div className="col-span-3 flex items-center justify-center h-full text-primary/80">
+                    <div className="col-span-3 flex items-center justify-center h-full text-primary/70">
                         No questions have been asked yet.
                     </div>
                 ) : (
-                    questions.data.map((q: Question, index: number) => (
-                        <QuestionCard
-                            key={q.id}
-                            question={q}
-                            setPreviewQuestion={setPreviewQuestion}
-                            index={index}
-                            total={questions.data.length}
-                        />
-                    ))
+                    <div className='col-span-3 h-full lg:h-[calc(100vh-130px)] overflow-y-auto pr-2'>
+                        {questions.data.map((q: Question, index: number) => (
+                            <QuestionCard
+                                key={q.id}
+                                question={q}
+                                setPreviewQuestion={setPreviewQuestion}
+                                index={index}
+                                total={questions.data.length}
+                            />
+                        ))}
+                    </div>
                 )}
             </div>
         </>
