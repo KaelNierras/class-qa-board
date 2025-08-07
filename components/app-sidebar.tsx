@@ -52,11 +52,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavMain items={data.navMain} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={{
-          name: user?.user_metadata?.full_name ?? "",
-          avatar: user?.user_metadata?.avatar_url ?? "",
-          email: user?.email ?? ""
+       {user && (
+         <NavUser user={{
+          name: user.user_metadata.full_name,
+          avatar: user.user_metadata.avatar_url,
+          email: user.email
         }} />
+       )}
       </SidebarFooter>
     </Sidebar>
   )
