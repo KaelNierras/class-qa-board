@@ -3,7 +3,7 @@
 import * as React from "react"
 import {
   ArrowUpCircleIcon,
-  LayoutDashboardIcon,
+  TimerIcon
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
@@ -22,9 +22,9 @@ import useUserData from "@/lib/user-data"
 const data = {
   navMain: [
     {
-      title: "Dashboard",
-      url: "/dashboard",
-      icon: LayoutDashboardIcon,
+      title: "Sessions",
+      url: "/sessions",
+      icon: TimerIcon,
     },
   ],
 }
