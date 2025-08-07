@@ -26,10 +26,10 @@ const AuthButton = () => {
           variant="outline"
           className="mr-2"
           onClick={() => {
-            router.push("/dashboard");
+            router.push("/sessions");
           }}
         >
-          Dashboard
+          Sessions
         </Button>
         <Button
           onClick={() => {
