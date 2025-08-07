@@ -1,3 +1,5 @@
+'use client'
+
 import { ReactNode } from "react"
 import { AppSidebar } from "@/components/app-sidebar"
 import { SiteHeader } from "@/components/site-header"
@@ -14,7 +16,7 @@ export default function AuthenticatedLayout({ children }: AuthenticatedLayoutPro
             <SidebarInset>
                 <SiteHeader />
                 <div className="p-5">
-                    {children}  
+                    {children}
                 </div>
             </SidebarInset>
         </SidebarProvider>
