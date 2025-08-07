@@ -41,9 +41,9 @@ const order = "asc"
 
 const SessionsPage = () => {
   const columns: { key: keyof Session; label: string; sortable?: boolean; render?: (value: any, row?: Session) => string | JSX.Element }[] = [
-    { key: "title", label: "Title", sortable: true },
-    { key: "created_at", label: "Created At", sortable: true },
-    { key: "created_by", label: "Created By", sortable: true },
+    { key: "title", label: "Title", sortable: false },
+    { key: "created_at", label: "Created At", sortable: false },
+    { key: "created_by", label: "Created By", sortable: false },
   ];
   return (
     <div>
