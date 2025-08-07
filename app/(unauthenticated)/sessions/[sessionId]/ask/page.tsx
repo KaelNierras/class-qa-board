@@ -1,7 +1,7 @@
 'use client'
 
 import { useParams } from 'next/navigation'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
@@ -17,7 +17,7 @@ const AskPage = () => {
     const [submitted, setSubmitted] = React.useState(false)
 
     // Load name from localStorage on mount
-    React.useEffect(() => {
+    useEffect(() => {
         const storedName = localStorage.getItem('askerName')
         if (storedName) setName(storedName)
     }, [])
