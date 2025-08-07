@@ -58,7 +58,10 @@ const AskPage = () => {
                         {submitted ? (
                             <div className="text-center py-8">
                                 <div className="text-lg font-semibold mb-2">Your question has been submitted!</div>
-                                <div className="text-gray-500">Thank you for your question.</div>
+                                <div className="text-gray-500 mb-5">Thank you for your question.</div>
+                                <Button variant="outline" onClick={() => setSubmitted(false)}>
+                                    Ask Again
+                                </Button>
                             </div>
                         ) : (
                             <form
