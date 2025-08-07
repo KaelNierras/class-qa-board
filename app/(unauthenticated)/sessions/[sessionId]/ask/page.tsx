@@ -61,13 +61,19 @@ const AskPage = () => {
                                 <div className="text-gray-500">Thank you for your question.</div>
                             </div>
                         ) : (
-                            <>
+                            <form
+                                onSubmit={e => {
+                                    e.preventDefault();
+                                    handleCreate();
+                                }}
+                            >
                                 <Input
                                     type="text"
                                     value={name}
                                     onChange={handleNameChange}
                                     className="w-full mb-4"
                                     placeholder="Your name"
+                                    required
                                 />
                                 <Textarea
                                     value={question}
@@ -75,13 +81,14 @@ const AskPage = () => {
                                     className="w-full mb-4"
                                     rows={4}
                                     placeholder="Type your question here..."
+                                    required
                                 />
                                 <div className="flex gap-4">
-                                    <Button variant="default" onClick={handleCreate}>
+                                    <Button variant="default" type="submit">
                                         Submit
                                     </Button>
                                 </div>
-                            </>
+                            </form>
                         )}
                     </CardContent>
                 </Card>

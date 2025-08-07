@@ -48,14 +48,29 @@ const SessionPage = () => {
 
     return (
         <>
-            {question.data.map((q: Question) => (
-                <Card key={q.id} className='space-y-2 mb-4'>
-                    <CardHeader>
-                        <CardTitle>{q.created_by}</CardTitle>
-                        <CardDescription>{q.text}</CardDescription>
-                    </CardHeader>
-                </Card>
-            ))}
+            {question.data.length === 0 ? (
+                <div className="text-center text-muted-foreground mt-8">
+                    No questions have been asked yet.
+                </div>
+            ) : (
+                question.data.map((q: Question) => (
+                    <Card key={q.id} className="mb-6 rounded-2xl shadow-none border-0 bg-gradient-to-b from-[#e9e3fc] to-[#d6e6fa] p-0">
+                        <CardHeader className="pb-0">
+                            <div className="text-xs text-[#7c6fc7] font-medium mb-2">
+                                Question {question.data.indexOf(q) + 1} of {question.data.length}
+                            </div>
+                            <div className="text-xs text-[#5c5470]">
+                                Asked by: {q.created_by || 'Unknown'}
+                            </div>
+                        </CardHeader>
+                        <CardContent className="pt-0 pb-6">
+                            <div className="text-xl font-semibold text-[#22223b] leading-snug mb-2">
+                                {q.text}
+                            </div>
+                        </CardContent>
+                    </Card>
+                ))
+            )}
         </>
     )
 }
