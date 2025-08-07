@@ -53,3 +53,11 @@ export interface Session {
   created_at: string
   created_by: string
 }
+
+export interface Question {
+    id: string
+    text: string
+    session_id: string
+    created_by: string
+    created_at: string
+}
