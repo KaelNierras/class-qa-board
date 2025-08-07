@@ -13,10 +13,10 @@ const PreviewModal: React.FC<PreviewModalProps> = ({ previewQuestion, setPreview
         <Dialog open={!!previewQuestion} onOpenChange={() => setPreviewQuestion(null)}>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Question Preview</DialogTitle>
+                    <DialogTitle className='text-primary'>Question Preview</DialogTitle>
                     <DialogDescription>
                         {previewQuestion?.created_by && (
-                            <div className="mb-2 text-xs text-muted-foreground">
+                            <div className="mb-2 text-xs">
                                 Asked by: {previewQuestion.created_by}
                             </div>
                         )}
@@ -24,7 +24,7 @@ const PreviewModal: React.FC<PreviewModalProps> = ({ previewQuestion, setPreview
                 </DialogHeader>
                 <div className="text-lg font-semibold mb-4">{previewQuestion?.text}</div>
                 <DialogClose asChild>
-                    <Button variant="secondary">Close</Button>
+                    <Button variant="default">Close</Button>
                 </DialogClose>
             </DialogContent>
         </Dialog>

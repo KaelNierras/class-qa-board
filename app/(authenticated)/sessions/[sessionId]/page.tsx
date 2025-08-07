@@ -96,7 +96,7 @@ const SessionPage = () => {
                             <div className="flex justify-center my-6">
                                 <QRCode
                                     value={process.env.NEXT_PUBLIC_BASE_URL + 'sessions/' + sessionId + '/ask'}
-
+                                    title="Scan to Ask a Question"
                                     bgColor="#ffffff"
                                     fgColor="#000000"
                                     level="Q"

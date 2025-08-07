@@ -19,12 +19,12 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ question, setPreviewQuestio
                 <div className="text-xs text-primary font-medium mb-2">
                     Question {index + 1} of {total}
                 </div>
-                <div className="text-xs text-primary/70 mb-2">
+                <div className="text-xs mb-2 text-black/60">
                     Asked by: {question.created_by || 'Unknown'}
                 </div>
             </CardHeader>
             <CardContent className="pt-0 pb-6">
-                <div className="text-xl font-semibold text-primary leading-snug mb-2">
+                <div className="text-xl font-semibold text-black leading-snug mb-2">
                     {question.text}
                 </div>
             </CardContent>
