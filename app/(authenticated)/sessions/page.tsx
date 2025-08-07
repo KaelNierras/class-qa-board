@@ -3,16 +3,8 @@
 import Table from '@/components/Table'
 import { Button } from '@/components/ui/button';
 import React from 'react'
+import { Session } from '@/types/index';
 
-// 1. Define the Session type
-type Session = {
-  id: string
-  title: string
-  created_at: string
-  created_by: string
-}
-
-// 2. Create dummy data
 const sessions = {
   data: [
     {

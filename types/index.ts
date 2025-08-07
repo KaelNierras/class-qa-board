@@ -46,3 +46,10 @@ export interface User {
     updated_at: string;
     is_anonymous: boolean;
 }
+
+export interface Session {
+  id: string
+  title: string
+  created_at: string
+  created_by: string
+}
