@@ -63,10 +63,6 @@ const SessionsPage = () => {
         data={sessions.data}
         sortColumn={sort as keyof Session}
         sortOrder={order as "asc" | "desc"}
-        onSort={(key: keyof Session, order: "asc" | "desc") => {
-          // Handle sorting logic here
-          console.log(`Sorting by ${key} in ${order} order`);
-        }}
         actions={
           (row: Session) => (
             <div className="flex space-x-2">
