@@ -70,7 +70,7 @@ const AskPage = () => {
             .insert([{
                 text: question,
                 session_id: sessionId,
-                created_by: name,
+                created_by: name.trim(),
             }])
             .select()
             .single();
