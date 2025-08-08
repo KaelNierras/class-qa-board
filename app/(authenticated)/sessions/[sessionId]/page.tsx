@@ -72,17 +72,24 @@ const SessionPage = () => {
     const handleCloseSession = async () => {
         if (!sessionId || !session) return;
         const newIsOpen = !session.is_open;
-        const { error } = await supabase
-            .from('sessions')
-            .update({ is_open: newIsOpen })
-            .eq('id', sessionId)
-            .select();
 
-        if (error) {
-            alert('Error updating session: ' + error.message);
-            return;
+        // Only update if the current state is different
+        const currentIsOpen = session.is_open;
+        if (currentIsOpen !== newIsOpen) {
+            const { error } = await supabase
+                .from('sessions')
+                .update({
+                    is_open: newIsOpen,
+                    created_by: session.created_by,
+                })
+                .eq('id', sessionId)
+                .select();
+            if (error) {
+                console.error('Error updating session:', error);
+                return;
+            }
         }
-        
+
         setSession((prev) => prev ? { ...prev, is_open: newIsOpen } : null);
 
     };

@@ -46,12 +46,11 @@ const AskPage = () => {
                 'postgres_changes',
                 { event: 'UPDATE', schema: 'public', table: 'sessions' },
                 (payload) => {
-                    console.log('Session updated:', payload);
                     if (payload.new.id === sessionId) {
                         setSession({ data: payload.new as Session });
                     }
                 }
-            );
+            ).subscribe();
 
         return () => {
             channel.unsubscribe();
@@ -82,10 +81,6 @@ const AskPage = () => {
         setQuestion('');
         setSubmitted(true);
     }
-
-    useEffect(() => {
-        console.log('Session data:', session.data);
-    }, [session.data]);
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen">
