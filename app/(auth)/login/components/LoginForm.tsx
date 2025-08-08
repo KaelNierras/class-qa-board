@@ -19,13 +19,13 @@ export function LoginForm() {
       <CardHeader>
         <CardTitle className="text-2xl">Login</CardTitle>
         <CardDescription>
-          Enter your email below to login to your account
+          Login with your Google account to continue
         </CardDescription>
       </CardHeader>
       <CardContent>
         <form action="">
             <div className="grid gap-4">
-              <div className="grid gap-2">
+              {/* <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
                   id="email"
@@ -43,7 +43,7 @@ export function LoginForm() {
               </div>
               <Button type="submit" formAction={login} className="w-full">
                 Login
-              </Button>
+              </Button> */}
              <SignInWithGoogleButton/> 
             </div>
         </form>
