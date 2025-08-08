@@ -145,7 +145,7 @@ const SessionPage = () => {
                             No questions have been asked yet.
                         </div>
                     ) : (
-                        <div className='col-span-3 h-full lg:h-[calc(100vh-130px)] overflow-y-auto pr-2'>
+                        <div className='col-span-3 h-full lg:h-[calc(100vh-150px)] overflow-y-auto pr-2'>
                             {questions.data.map((q: Question, index: number) => (
                                 <QuestionCard
                                     key={q.id}
