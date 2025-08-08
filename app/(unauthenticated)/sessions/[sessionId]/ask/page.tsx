@@ -94,7 +94,7 @@ const AskPage = () => {
                         {!session.data ? (
                             <div className="text-center py-8">
                                 <span className="flex justify-center items-center">
-                                    <BeatLoader speedMultiplier={2} size={15} color="#4A5568" />
+                                    <BeatLoader size={15} />
                                 </span>
                             </div>
                         ) : !session.data.is_open ? (
