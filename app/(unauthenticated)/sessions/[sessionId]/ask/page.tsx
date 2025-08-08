@@ -8,6 +8,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { createClient } from '@/utils/supabase/client'
 import { Input } from '@/components/ui/input'
 import { Session } from '@/types'
+import { BeatLoader, PuffLoader, ScaleLoader, SyncLoader } from 'react-spinners'
 
 const AskPage = () => {
     const supabase = createClient();
@@ -90,7 +91,13 @@ const AskPage = () => {
                         <CardTitle>Ask a Question</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        {session.data && !session.data.is_open ? (
+                        {!session.data ? (
+                            <div className="text-center py-8">
+                                <span className="flex justify-center items-center">
+                                    <BeatLoader speedMultiplier={2} size={15} color="#4A5568" />
+                                </span>
+                            </div>
+                        ) : !session.data.is_open ? (
                             <div className="text-center py-8">
                                 <div className="text-lg font-semibold mb-2">This session is closed.</div>
                                 <div className="text-gray-500 mb-5">You can no longer submit questions.</div>
