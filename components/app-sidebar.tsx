@@ -3,7 +3,8 @@
 import * as React from "react"
 import {
   ArrowUpCircleIcon,
-  TimerIcon
+  TimerIcon,
+  UserIcon
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
@@ -25,6 +26,11 @@ const data = {
       title: "Sessions",
       url: "/sessions",
       icon: TimerIcon,
+    },
+     {
+      title: "Participants",
+      url: "/participants",
+      icon: UserIcon,
     },
   ],
 }
