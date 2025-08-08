@@ -2,9 +2,9 @@
 
 import { Question, Session } from '@/types';
 import { createClient } from '@/utils/supabase/client';
-import { TimerIcon } from 'lucide-react';
+import { TimerIcon, Trash2 } from 'lucide-react';
 import moment from 'moment';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import React, { useEffect } from 'react'
 import { useState } from 'react';
 import QuestionPreviewModal from './components/QuestionPreviewModal';
@@ -12,15 +12,17 @@ import QuestionCard from './components/QuestionCard';
 import QRCode from "react-qr-code";
 import { Button } from '@/components/ui/button';
 import { BeatLoader } from 'react-spinners';
+import DeleteSessionModal from './components/DeleteSessionModal';
 
 const SessionPage = () => {
     const supabase = createClient();
     const params = useParams()
+    const router = useRouter();
     const sessionId = params.sessionId
     const [questions, setQuestions] = React.useState<{ data: Question[] }>({ data: [] });
     const [previewQuestion, setPreviewQuestion] = useState<Question | null>(null);
     const [session, setSession] = useState<Session | null>(null);
-
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
     useEffect(() => {
         if (!sessionId) return;
@@ -95,11 +97,31 @@ const SessionPage = () => {
 
     };
 
+    const handleDeleteSession = async () => {
+        if (!sessionId) return;
+
+        const { error } = await supabase
+            .from('sessions')
+            .delete()
+            .eq('id', sessionId);
+        if (error) {
+            console.error('Error deleting session:', error);
+        } else {
+            router.push('/sessions');
+        }
+    };
+
     return (
         <>
             <QuestionPreviewModal
                 previewQuestion={previewQuestion}
                 setPreviewQuestion={setPreviewQuestion}
+            />
+
+            <DeleteSessionModal
+                open={isDeleteModalOpen}
+                onConfirm={handleDeleteSession}
+                onCancel={() => setIsDeleteModalOpen(false)}
             />
 
             {/* Loading Screen */}
@@ -158,13 +180,22 @@ const SessionPage = () => {
                         </div>
                     )}
 
-                    <Button
-                        onClick={handleCloseSession}
-                        variant={session?.is_open ? "destructive" : "default"}
-                        className="fixed bottom-4 right-4 z-50"
-                    >
-                        {session?.is_open ? 'Close Session' : 'Open Session'}
-                    </Button>
+                    <div className="fixed bottom-4 right-4 z-50 flex gap-2">
+                        <Button
+                            onClick={handleCloseSession}
+                            variant={session?.is_open ? "destructive" : "default"}
+                        
+                        >
+                            {session?.is_open ? 'Close Session' : 'Open Session'}
+                        </Button>
+                        <Button
+                            variant="outline"
+                            onClick={() => setIsDeleteModalOpen(true)}
+                        >
+                            <Trash2 className="h-4 w-4" />
+                            Delete Session
+                        </Button>
+                    </div>
                 </div>
             )}
         </>
