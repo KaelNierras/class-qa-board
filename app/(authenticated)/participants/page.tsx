@@ -86,7 +86,7 @@ const ParticipantsPage = () => {
                 <div className='flex gap-4'>
                     <div>
                         <Label>
-                            Start Date
+                            Start
                         </Label>
                         <input
                             id="start-date"
@@ -98,7 +98,7 @@ const ParticipantsPage = () => {
                     </div>
                     <div>
                         <Label>
-                            End Date
+                            End
                         </Label>
                         <input
                             id="end-date"
