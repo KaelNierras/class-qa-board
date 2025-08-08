@@ -26,7 +26,7 @@ const TopParticipants = ({ counts }: TopParticipantsProps) => {
                         <CardContent>
                             <div className="flex flex-col gap-2">
                                 <div className="flex items-center justify-between">
-                                    <span className="text-sm text-gray-600">Total Questions</span>
+                                    <span className="text-sm text-gray-600">Questions Asked</span>
                                     <span className="font-bold text-lg">{count}</span>
                                 </div>
                             </div>
