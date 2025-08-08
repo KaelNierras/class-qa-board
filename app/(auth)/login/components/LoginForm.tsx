@@ -38,9 +38,6 @@ export function LoginForm() {
               <div className="grid gap-2">
                 <div className="flex items-center">
                   <Label htmlFor="password">Password</Label>
-                  <Link href="#" className="ml-auto inline-block text-sm underline">
-                    Forgot your password?
-                  </Link>
                 </div>
                 <Input id="password" name="password" type="password" required />
               </div>
@@ -50,12 +47,12 @@ export function LoginForm() {
              <SignInWithGoogleButton/> 
             </div>
         </form>
-        <div className="mt-4 text-center text-sm">
+        {/* <div className="mt-4 text-center text-sm">
           Don&apos;t have an account?{" "}
           <Link href="/signup" className="underline">
             Sign up
           </Link>
-        </div>
+        </div> */}
       </CardContent>
     </Card>
   )
