@@ -63,7 +63,7 @@ const QuickCreateSessionModal = () => {
                             />
                         </div>
                     </div>
-                    <DialogFooter className="sm:justify-start mt-5">
+                    <DialogFooter className="sm:justify-end mt-5">
                         <DialogClose asChild>
                             <Button type="button" variant="secondary">
                                 Close
