@@ -53,8 +53,18 @@ export async function updateSession(request: NextRequest) {
       },
     }
   )
+  // Check if the user is authenticated
+  const { data: { user } } = await supabase.auth.getUser()
+  const currentPath = request.nextUrl.pathname
 
-  await supabase.auth.getUser()
+  // Define allowed paths, including dynamic /sessions/:sessionId/ask
+  const allowedPaths = ['/', '/login', '/signup']
+  const isSessionAskPath = /^\/sessions\/[^\/]+\/ask\/?$/.test(currentPath)
+  const isAllowed = allowedPaths.includes(currentPath) || isSessionAskPath
+
+  if (!user && !isAllowed) {
+    return NextResponse.redirect(new URL('/login', request.url))
+  }
 
   return response
 }

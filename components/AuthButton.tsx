@@ -4,9 +4,10 @@ import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import { signout } from "@/lib/auth-actions";
+import { User } from "@/types/index";
 
-const LoginButton = () => {
-  const [user, setUser] = useState<any>(null);
+const AuthButton = () => {
+  const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
   const supabase = createClient();
   useEffect(() => {
@@ -14,20 +15,31 @@ const LoginButton = () => {
       const {
         data: { user },
       } = await supabase.auth.getUser();
-      setUser(user);
+      setUser(user as User | null);
     };
     fetchUser();
   }, []);
   if (user) {
     return (
-      <Button
-        onClick={() => {
-          signout();
-          setUser(null);
-        }}
-      >
-        Log out
-      </Button>
+      <>
+        <Button
+          variant="outline"
+          className="mr-2"
+          onClick={() => {
+            router.push("/sessions");
+          }}
+        >
+          Sessions
+        </Button>
+        <Button
+          onClick={() => {
+            signout();
+            setUser(null);
+          }}
+        >
+          Log out
+        </Button>
+      </>
     );
   }
   return (
@@ -42,4 +54,4 @@ const LoginButton = () => {
   );
 };
 
-export default LoginButton;
+export default AuthButton;
