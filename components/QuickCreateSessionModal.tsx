@@ -72,6 +72,7 @@ const QuickCreateSessionModal = () => {
                         <Button
                             type="button"
                             onClick={handleCreate}
+                            disabled={!sessionTitle.trim()}
                         >
                             Create
                         </Button>
