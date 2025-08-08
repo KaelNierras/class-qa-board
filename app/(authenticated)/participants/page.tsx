@@ -41,12 +41,6 @@ const ParticipantsPage = () => {
                     }
                 });
                 setCounts(newCounts);
-
-                const dummyCounts: Record<string, number> = {};
-                for (let i = 1; i <= 40; i++) {
-                    dummyCounts[`user${i}@example.com`] = Math.floor(Math.random() * 10) + 1;
-                }
-                setCounts(dummyCounts);
             }
         };
 
