@@ -10,6 +10,7 @@ import { useState } from 'react';
 import QuestionPreviewModal from './components/QuestionPreviewModal';
 import QuestionCard from './components/QuestionCard';
 import QRCode from "react-qr-code";
+import { Button } from '@/components/ui/button';
 
 const SessionPage = () => {
     const supabase = createClient();
@@ -68,6 +69,31 @@ const SessionPage = () => {
         };
     }, [sessionId]);
 
+    const handleCloseSession = async () => {
+        if (!sessionId || !session) return;
+        const newIsOpen = !session.is_open;
+
+        // Only update if the current state is different
+        const currentIsOpen = session.is_open;
+        if (currentIsOpen !== newIsOpen) {
+            const { error } = await supabase
+                .from('sessions')
+                .update({
+                    is_open: newIsOpen,
+                    created_by: session.created_by,
+                })
+                .eq('id', sessionId)
+                .select();
+            if (error) {
+                console.error('Error updating session:', error);
+                return;
+            }
+        }
+
+        setSession((prev) => prev ? { ...prev, is_open: newIsOpen } : null);
+
+    };
+
     return (
         <>
             <QuestionPreviewModal
@@ -122,6 +148,14 @@ const SessionPage = () => {
                         ))}
                     </div>
                 )}
+
+                <Button
+                    onClick={handleCloseSession}
+                    variant={session?.is_open ? "destructive" : "default"}
+                    className="fixed bottom-4 right-4 z-50"
+                >
+                    {session?.is_open ? 'Close Session' : 'Open Session'}
+                </Button>
             </div>
         </>
     )
