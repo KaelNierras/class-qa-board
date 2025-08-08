@@ -18,10 +18,9 @@ const QuickCreateSessionModal = () => {
     const handleCreate = async () => {
         const { data, error } = await supabase
             .from('sessions')
-            .insert([{
-                title: sessionTitle,
+            .insert([{ title: sessionTitle,
                 created_by: user?.id,
-            }])
+             }])
             .select()
             .single();
         if (error) {
@@ -44,52 +43,41 @@ const QuickCreateSessionModal = () => {
                 <span>Quick Create</span>
             </DialogTrigger>
             <DialogContent className="sm:max-w-md flex flex-row gap-6">
-                <form
-                    onSubmit={async (e) => {
-                        e.preventDefault();
-                        if (!sessionTitle.trim()) {
-                            alert('Session title is required.');
-                            return;
-                        }
-                        await handleCreate();
-                    }}
-                >
-                    <div className="flex-1">
-                        <DialogHeader>
-                            <DialogTitle>New Session</DialogTitle>
-                            <DialogDescription>
-                                Enter a title for your new session.
-                            </DialogDescription>
-                        </DialogHeader>
-                        <div className="flex items-center gap-2 mt-5">
-                            <div className="grid flex-1 gap-2">
-                                <Label htmlFor="session-title">
-                                    Session Title
-                                </Label>
-                                <Input
-                                    id="session-title"
-                                    placeholder="Enter session title"
-                                    value={sessionTitle}
-                                    onChange={e => setSessionTitle(e.target.value)}
-                                    required
-                                />
-                            </div>
+                <div className="flex-1">
+                    <DialogHeader>
+                        <DialogTitle>New Session</DialogTitle>
+                        <DialogDescription>
+                            Enter a title for your new session.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="flex items-center gap-2 mt-5">
+                        <div className="grid flex-1 gap-2">
+                            <Label htmlFor="session-title">
+                                Session Title
+                            </Label>
+                            <Input
+                                id="session-title"
+                                placeholder="Enter session title"
+                                value={sessionTitle}
+                                onChange={e => setSessionTitle(e.target.value)}
+                            />
                         </div>
-                        <DialogFooter className="sm:justify-start mt-5">
-                            <DialogClose asChild>
-                                <Button type="button" variant="secondary">
-                                    Close
-                                </Button>
-                            </DialogClose>
-                            <Button
-                                type="submit"
-                                disabled={!sessionTitle.trim()}
-                            >
-                                Create
-                            </Button>
-                        </DialogFooter>
                     </div>
-                </form>
+                    <DialogFooter className="sm:justify-start mt-5">
+                        <DialogClose asChild>
+                            <Button type="button" variant="secondary">
+                                Close
+                            </Button>
+                        </DialogClose>
+                        <Button
+                            type="button"
+                            onClick={handleCreate}
+                            disabled={!sessionTitle.trim()}
+                        >
+                            Create
+                        </Button>
+                    </DialogFooter>
+                </div>
             </DialogContent>
         </Dialog>
     )
