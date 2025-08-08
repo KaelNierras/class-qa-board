@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 export function useQuoteOfTheDay() {
-    const [quote, setQuote] = useState("Welcome!");
+    const [quote, setQuote] = useState("");
 
     useEffect(() => {
         const localKey = "quoteOfTheDay";
@@ -25,13 +25,13 @@ export function useQuoteOfTheDay() {
         })
             .then(res => res.json())
             .then(data => {
-                const fetchedQuote = data[0]?.quote || "Welcome!";
+                const fetchedQuote = data[0]?.quote || "";
                 localStorage.setItem(localKey, JSON.stringify({ date: today, quote: fetchedQuote }));
                 setQuote(fetchedQuote);
             })
             .catch(() => {
-                localStorage.setItem(localKey, JSON.stringify({ date: today, quote: "Welcome!" }));
-                setQuote("Welcome!");
+                localStorage.setItem(localKey, JSON.stringify({ date: today, quote: "" }));
+                setQuote("");
             });
     }, []);
 
