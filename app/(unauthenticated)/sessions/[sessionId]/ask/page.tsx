@@ -18,6 +18,7 @@ const AskPage = () => {
     const [question, setQuestion] = React.useState('')
     const [submitted, setSubmitted] = React.useState(false)
     const [session, setSession] = React.useState<{ data: Session | null }>({ data: null });
+    const [loading, setLoading] = React.useState(false);
 
     // Load name from localStorage on mount
     useEffect(() => {
@@ -65,6 +66,8 @@ const AskPage = () => {
     }
 
     const handleCreate = async () => {
+        if (loading) return;
+        setLoading(true);
         const { data, error } = await supabase
             .from('questions')
             .insert([{
@@ -81,6 +84,7 @@ const AskPage = () => {
         }
         setQuestion('');
         setSubmitted(true);
+        setLoading(false);
     }
 
     return (
@@ -134,8 +138,8 @@ const AskPage = () => {
                                     required
                                 />
                                 <div className="flex gap-4">
-                                    <Button variant="default" type="submit">
-                                        Submit
+                                    <Button variant="default" type="submit" disabled={loading}>
+                                        {loading ? "Submitting..." : "Submit"}
                                     </Button>
                                 </div>
                             </form>
