@@ -80,6 +80,7 @@ const AskPage = () => {
 
         if (error) {
             alert(error.message);
+            setLoading(false);
             return;
         }
         setQuestion('');
