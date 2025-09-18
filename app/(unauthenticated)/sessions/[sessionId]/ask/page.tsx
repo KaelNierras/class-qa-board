@@ -8,7 +8,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { createClient } from '@/utils/supabase/client'
 import { Input } from '@/components/ui/input'
 import { Session } from '@/types'
-import { BeatLoader, PuffLoader, ScaleLoader, SyncLoader } from 'react-spinners'
+import { BeatLoader } from 'react-spinners'
 
 const AskPage = () => {
     const supabase = createClient();
@@ -16,9 +16,8 @@ const AskPage = () => {
     const sessionId = params.sessionId
     const [name, setName] = React.useState('')
     const [question, setQuestion] = React.useState('')
-    const [submitted, setSubmitted] = React.useState(false)
     const [session, setSession] = React.useState<{ data: Session | null }>({ data: null });
-    const [loading, setLoading] = React.useState(false);
+    const [state, setState] = React.useState<'loading' | 'success' | 'idle' | 'error'>('idle');
 
     // Load name from localStorage on mount
     useEffect(() => {
@@ -66,8 +65,8 @@ const AskPage = () => {
     }
 
     const handleCreate = async () => {
-        if (loading) return;
-        setLoading(true);
+        if (state === 'loading') return;
+        setState('loading');
         const { data, error } = await supabase
             .from('questions')
             .insert([{
@@ -80,12 +79,11 @@ const AskPage = () => {
 
         if (error) {
             alert(error.message);
-            setLoading(false);
+            setState('error');
             return;
         }
         setQuestion('');
-        setSubmitted(true);
-        setLoading(false);
+        setState('success');
     }
 
     return (
@@ -107,11 +105,11 @@ const AskPage = () => {
                                 <div className="text-lg font-semibold mb-2">This session is closed.</div>
                                 <div className="text-gray-500 mb-5">You can no longer submit questions.</div>
                             </div>
-                        ) : submitted ? (
+                        ) : state === 'success' ? (
                             <div className="text-center py-8">
                                 <div className="text-lg font-semibold mb-2">Your question has been submitted!</div>
                                 <div className="text-gray-500 mb-5">Thank you for your question.</div>
-                                <Button variant="outline" onClick={() => setSubmitted(false)}>
+                                <Button variant="outline" onClick={() => setState('idle')}>
                                     Ask Again
                                 </Button>
                             </div>
@@ -139,8 +137,8 @@ const AskPage = () => {
                                     required
                                 />
                                 <div className="flex gap-4">
-                                    <Button variant="default" type="submit" disabled={loading}>
-                                        {loading ? "Submitting..." : "Submit"}
+                                    <Button variant="default" type="submit" disabled={state === 'loading'}>
+                                        {state === 'loading' ? "Submitting..." : "Submit"}
                                     </Button>
                                 </div>
                             </form>
