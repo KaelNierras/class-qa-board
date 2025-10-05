@@ -19,7 +19,7 @@ const ParticipantsPage = () => {
     useEffect(() => {
         const fetchParticipants = async () => {
             let query = supabase
-                .from('questions')
+                .from('entries')
                 .select('created_by,created_at');
 
             if (startDate) {
@@ -79,7 +79,7 @@ const ParticipantsPage = () => {
         <div>
             <h1 className="text-2xl font-bold mb-4">Participants</h1>
             <p className="text-gray-600 mb-4">
-                See how many questions each participant has asked.
+                See how many entries each participant has made.
             </p>
 
             <div className="mb-4 flex gap-4 items-center justify-between">
