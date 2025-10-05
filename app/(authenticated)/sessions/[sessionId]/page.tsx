@@ -7,12 +7,12 @@ import moment from 'moment';
 import { useParams, useRouter } from 'next/navigation';
 import React, { useEffect } from 'react'
 import { useState } from 'react';
-import QuestionPreviewModal from './components/QuestionPreviewModal';
-import QuestionCard from './components/QuestionCard';
+import QuestionPreviewModal from './_components/QuestionPreviewModal';
+import QuestionCard from './_components/QuestionCard';
 import QRCode from "react-qr-code";
 import { Button } from '@/components/ui/button';
 import { BeatLoader } from 'react-spinners';
-import DeleteSessionModal from './components/DeleteSessionModal';
+import DeleteSessionModal from './_components/DeleteSessionModal';
 
 const SessionPage = () => {
     const supabase = createClient();
