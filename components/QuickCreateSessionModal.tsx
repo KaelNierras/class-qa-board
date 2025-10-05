@@ -72,8 +72,12 @@ const QuickCreateSessionModal = () => {
                                 <SelectContent>
                                     <SelectGroup>
                                         <SelectLabel>Session Type</SelectLabel>
-                                        <SelectItem value="question">Question</SelectItem>
-                                        <SelectItem value="answer">Answer</SelectItem>
+                                        <SelectItem value="question">
+                                            Start an answer session (you answer, others ask)
+                                        </SelectItem>
+                                        <SelectItem value="answer">
+                                            Start a Q&A session (you ask, others answer)
+                                        </SelectItem>
                                     </SelectGroup>
                                 </SelectContent>
                             </Select>

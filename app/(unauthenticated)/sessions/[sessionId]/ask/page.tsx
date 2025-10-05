@@ -91,7 +91,7 @@ const AskPage = () => {
             <div className="w-full max-w-md">
                 <Card>
                     <CardHeader>
-                        <CardTitle>{session.data?.type === 'question' ? "Ask a Question" : "Provide an Answer"}</CardTitle>
+                        {session.data ? <CardTitle>{session.data.type === 'question' ? "Ask a Question" : "Provide an Answer"}</CardTitle> : <CardTitle></CardTitle>}
                     </CardHeader>
                     <CardContent>
                         {!session.data ? (
