@@ -18,7 +18,7 @@ const PreviewModal: React.FC<PreviewModalProps> = ({ previewEntry, setPreviewEnt
                     <DialogDescription>
                         {previewEntry?.created_by && (
                             <div className="mb-2 text-xs">
-                                Asked by: {previewEntry.created_by}
+                                {entryType === 'question' ? 'Asked by:' : 'Answered by:'} {previewEntry.created_by}
                             </div>
                         )}
                     </DialogDescription>
