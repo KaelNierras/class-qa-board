@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 
 const QuickCreateSessionModal = () => {
     const [sessionTitle, setSessionTitle] = useState('')
+    const [sessionType, setSessionType] = useState<'question' | 'answer'>('question')
     const router = useRouter()
     const supabase = createClient();
     const [open, setOpen] = useState(false);
@@ -22,6 +23,7 @@ const QuickCreateSessionModal = () => {
             .insert([{
                 title: sessionTitle,
                 created_by: user?.id,
+                type: sessionType,
             }])
             .select()
             .single();
@@ -63,7 +65,7 @@ const QuickCreateSessionModal = () => {
                                 value={sessionTitle}
                                 onChange={e => setSessionTitle(e.target.value)}
                             />
-                            <Select>
+                            <Select value={sessionType} onValueChange={(value) => setSessionType(value as 'question' | 'answer')}>
                                 <SelectTrigger className="w-full">
                                     <SelectValue placeholder="Select type" />
                                 </SelectTrigger>
