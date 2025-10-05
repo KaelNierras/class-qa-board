@@ -7,9 +7,11 @@ import { PlusCircleIcon } from 'lucide-react'
 import { createClient } from '@/utils/supabase/client'
 import useUserData from '@/lib/user-data'
 import { useRouter } from 'next/navigation'
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from './ui/select'
 
 const QuickCreateSessionModal = () => {
     const [sessionTitle, setSessionTitle] = useState('')
+    const [sessionType, setSessionType] = useState<'question' | 'answer'>('question')
     const router = useRouter()
     const supabase = createClient();
     const [open, setOpen] = useState(false);
@@ -18,9 +20,11 @@ const QuickCreateSessionModal = () => {
     const handleCreate = async () => {
         const { data, error } = await supabase
             .from('sessions')
-            .insert([{ title: sessionTitle,
+            .insert([{
+                title: sessionTitle,
                 created_by: user?.id,
-             }])
+                type: sessionType,
+            }])
             .select()
             .single();
         if (error) {
@@ -61,6 +65,18 @@ const QuickCreateSessionModal = () => {
                                 value={sessionTitle}
                                 onChange={e => setSessionTitle(e.target.value)}
                             />
+                            <Select value={sessionType} onValueChange={(value) => setSessionType(value as 'question' | 'answer')}>
+                                <SelectTrigger className="w-full">
+                                    <SelectValue placeholder="Select type" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectGroup>
+                                        <SelectLabel>Session Type</SelectLabel>
+                                        <SelectItem value="question">Question</SelectItem>
+                                        <SelectItem value="answer">Answer</SelectItem>
+                                    </SelectGroup>
+                                </SelectContent>
+                            </Select>
                         </div>
                     </div>
                     <DialogFooter className="sm:justify-end mt-5">

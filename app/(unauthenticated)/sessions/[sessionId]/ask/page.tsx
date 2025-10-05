@@ -91,7 +91,7 @@ const AskPage = () => {
             <div className="w-full max-w-md">
                 <Card>
                     <CardHeader>
-                        <CardTitle>Ask a Question</CardTitle>
+                        <CardTitle>{session.data?.type === 'question' ? "Ask a Question" : "Provide an Answer"}</CardTitle>
                     </CardHeader>
                     <CardContent>
                         {!session.data ? (
@@ -103,14 +103,14 @@ const AskPage = () => {
                         ) : !session.data.is_open ? (
                             <div className="text-center py-8">
                                 <div className="text-lg font-semibold mb-2">This session is closed.</div>
-                                <div className="text-gray-500 mb-5">You can no longer submit questions.</div>
+                                <div className="text-gray-500 mb-5">{session.data?.type === 'question' ? "You can no longer submit questions." : "You can no longer submit answers."}</div>
                             </div>
                         ) : state === 'success' ? (
                             <div className="text-center py-8">
-                                <div className="text-lg font-semibold mb-2">Your question has been submitted!</div>
-                                <div className="text-gray-500 mb-5">Thank you for your question.</div>
+                                <div className="text-lg font-semibold mb-2">{session.data?.type === 'question' ? "Your question has been submitted!" : "Your answer has been submitted!"}</div>
+                                <div className="text-gray-500 mb-5">Thank you for your {session.data?.type === 'question' ? "question." : "answer."}</div>
                                 <Button variant="outline" onClick={() => setState('idle')}>
-                                    Ask Again
+                                    Ask another {session.data?.type === 'question' ? "question" : "answer"}
                                 </Button>
                             </div>
                         ) : (
@@ -120,6 +120,11 @@ const AskPage = () => {
                                     handleCreate();
                                 }}
                             >
+                                <div className="mb-2 text-sm text-gray-600">
+                                    {session.data.title
+                                        ? <><span className="font-medium">{session.data.title}</span></>
+                                        : "No topic set for this session."}
+                                </div>
                                 <Input
                                     type="text"
                                     value={name}
