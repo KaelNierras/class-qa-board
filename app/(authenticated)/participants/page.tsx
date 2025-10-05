@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { createClient } from '@/utils/supabase/client';
 import { Label } from '@radix-ui/react-label';
 import React, { useEffect, useState } from 'react'
-import TopParticipants from './components/TopParticipants';
+import TopParticipants from './_components/TopParticipants';
 
 const INITIAL_VISIBLE = 5;
 
