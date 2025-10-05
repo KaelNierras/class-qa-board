@@ -1,28 +1,29 @@
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import { Question } from '@/types';
+import { Entry } from '@/types';
 import React from 'react'
 
 interface PreviewModalProps {
-    previewQuestion: Question | null;
-    setPreviewQuestion: React.Dispatch<React.SetStateAction<Question | null>>;
+    previewEntry: Entry | null;
+    entryType: string;
+    setPreviewEntry: React.Dispatch<React.SetStateAction<Entry | null>>;
 }
 
-const PreviewModal: React.FC<PreviewModalProps> = ({ previewQuestion, setPreviewQuestion }) => {
+const PreviewModal: React.FC<PreviewModalProps> = ({ previewEntry, setPreviewEntry, entryType }) => {
     return (
-        <Dialog open={!!previewQuestion} onOpenChange={() => setPreviewQuestion(null)}>
+        <Dialog open={!!previewEntry} onOpenChange={() => setPreviewEntry(null)}>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle className='text-primary'>Question Preview</DialogTitle>
+                    <DialogTitle className='text-primary'>{entryType === 'question' ? 'Question Preview' : 'Answer Preview'}</DialogTitle>
                     <DialogDescription>
-                        {previewQuestion?.created_by && (
+                        {previewEntry?.created_by && (
                             <div className="mb-2 text-xs">
-                                Asked by: {previewQuestion.created_by}
+                                Asked by: {previewEntry.created_by}
                             </div>
                         )}
                     </DialogDescription>
                 </DialogHeader>
-                <div className="text-lg font-semibold mb-4">{previewQuestion?.text}</div>
+                <div className="text-lg font-semibold mb-4">{previewEntry?.text}</div>
                 <DialogClose asChild>
                     <Button variant="default">Close</Button>
                 </DialogClose>

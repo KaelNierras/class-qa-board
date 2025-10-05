@@ -1,14 +1,14 @@
 'use client';
 
-import { Question, Session } from '@/types';
+import { Entry, Session } from '@/types';
 import { createClient } from '@/utils/supabase/client';
 import { TimerIcon, Trash2 } from 'lucide-react';
 import moment from 'moment';
 import { useParams, useRouter } from 'next/navigation';
 import React, { useEffect } from 'react'
 import { useState } from 'react';
-import QuestionPreviewModal from './_components/QuestionPreviewModal';
-import QuestionCard from './_components/QuestionCard';
+import EntryPreviewModal from './_components/EntryPreviewModal';
+import EntryCard from './_components/EntryCard';
 import QRCode from "react-qr-code";
 import { Button } from '@/components/ui/button';
 import { BeatLoader } from 'react-spinners';
@@ -19,23 +19,23 @@ const SessionPage = () => {
     const params = useParams()
     const router = useRouter();
     const sessionId = params.sessionId
-    const [questions, setQuestions] = React.useState<{ data: Question[] }>({ data: [] });
-    const [previewQuestion, setPreviewQuestion] = useState<Question | null>(null);
+    const [entries, setEntries] = React.useState<{ data: Entry[] }>({ data: [] });
+    const [previewEntry, setPreviewEntry] = useState<Entry | null>(null);
     const [session, setSession] = useState<Session | null>(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
     useEffect(() => {
         if (!sessionId) return;
 
-        const fetchQuestions = async () => {
+        const fetchEntries = async () => {
             const { data, error } = await supabase
-                .from('questions')
+                .from('entries')
                 .select()
                 .eq('session_id', sessionId);
             if (error) {
-                console.error('Error fetching questions:', error);
+                console.error('Error fetching entries:', error);
             } else {
-                setQuestions({ data: data as Question[] });
+                setEntries({ data: data as Entry[] });
             }
         };
 
@@ -52,20 +52,20 @@ const SessionPage = () => {
             }
         };
 
-        const channel = supabase.channel('public:questions')
+        const channel = supabase.channel('public:entries')
             .on(
                 'postgres_changes',
-                { event: 'INSERT', schema: 'public', table: 'questions' },
+                { event: 'INSERT', schema: 'public', table: 'entries' },
                 (payload) => {
-                    setQuestions((prev) => ({
-                        data: [...prev.data, payload.new as Question],
+                    setEntries((prev) => ({
+                        data: [...prev.data, payload.new as Entry],
                     }));
                 }
             )
             .subscribe();
 
         fetchSession();
-        fetchQuestions();
+        fetchEntries();
 
         return () => {
             supabase.removeChannel(channel);
@@ -113,9 +113,10 @@ const SessionPage = () => {
 
     return (
         <>
-            <QuestionPreviewModal
-                previewQuestion={previewQuestion}
-                setPreviewQuestion={setPreviewQuestion}
+            <EntryPreviewModal
+                previewEntry={previewEntry}
+                entryType={session?.type ?? "question"}
+                setPreviewEntry={setPreviewEntry}
             />
 
             <DeleteSessionModal
@@ -162,19 +163,20 @@ const SessionPage = () => {
                             )
                         }
                     </div>
-                    {questions.data.length === 0 ? (
+                    {entries.data.length === 0 ? (
                         <div className="col-span-3 flex items-center justify-center h-full text-primary/70">
-                            No questions have been asked yet.
+                            {session?.type === 'question' ? 'No questions have been asked yet.' : 'No answers have been given yet.'}
                         </div>
                     ) : (
                         <div className='col-span-3 h-full lg:h-[calc(100vh-150px)] overflow-y-auto pr-2'>
-                            {questions.data.map((q: Question, index: number) => (
-                                <QuestionCard
+                            {entries.data.map((q: Entry, index: number) => (
+                                <EntryCard
+                                    entryType={session?.type ?? "question"}
                                     key={q.id}
-                                    question={q}
-                                    setPreviewQuestion={setPreviewQuestion}
+                                    entry={q}
+                                    setPreviewEntry={setPreviewEntry}
                                     index={index}
-                                    total={questions.data.length}
+                                    total={entries.data.length}
                                 />
                             ))}
                         </div>
