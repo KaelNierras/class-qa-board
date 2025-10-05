@@ -53,9 +53,10 @@ export interface Session {
   created_at: string
   created_by: string
   is_open: boolean
+  type: 'question' | 'answer'
 }
 
-export interface Question {
+export interface Entry {
     id: string
     text: string
     session_id: string
