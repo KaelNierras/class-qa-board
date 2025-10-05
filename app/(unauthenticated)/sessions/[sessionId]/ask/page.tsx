@@ -15,7 +15,7 @@ const AskPage = () => {
     const params = useParams()
     const sessionId = params.sessionId
     const [name, setName] = React.useState('')
-    const [question, setQuestion] = React.useState('')
+    const [entry, setEntry] = React.useState('')
     const [session, setSession] = React.useState<{ data: Session | null }>({ data: null });
     const [state, setState] = React.useState<'loading' | 'success' | 'idle' | 'error'>('idle');
 
@@ -68,9 +68,9 @@ const AskPage = () => {
         if (state === 'loading') return;
         setState('loading');
         const { data, error } = await supabase
-            .from('questions')
+            .from('entries')
             .insert([{
-                text: question,
+                text: entry,
                 session_id: sessionId,
                 created_by: name.trim(),
             }])
@@ -82,7 +82,7 @@ const AskPage = () => {
             setState('error');
             return;
         }
-        setQuestion('');
+        setEntry('');
         setState('success');
     }
 
@@ -134,11 +134,11 @@ const AskPage = () => {
                                     required
                                 />
                                 <Textarea
-                                    value={question}
-                                    onChange={e => setQuestion(e.target.value)}
+                                    value={entry}
+                                    onChange={e => setEntry(e.target.value)}
                                     className="w-full mb-4"
                                     rows={4}
-                                    placeholder="Type your question here..."
+                                    placeholder={session.data.type === 'question' ? "Type your question here..." : "Type your answer here..."}
                                     required
                                 />
                                 <div className="flex gap-4">

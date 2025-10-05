@@ -50,7 +50,7 @@ const ParticipantsPage = () => {
     // CSV export feature
     const handleExportCSV = () => {
         const rows = [
-            ['Participant', 'Questions Asked'],
+            ['Participant', 'Entries'],
             ...Object.entries(counts)
                 .sort((a, b) => b[1] - a[1])
                 .map(([participant, count]) => [participant, count.toString()])
