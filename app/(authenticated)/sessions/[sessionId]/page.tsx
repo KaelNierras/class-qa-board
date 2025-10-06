@@ -55,13 +55,15 @@ const SessionPage = () => {
 
         const channel = supabase.channel('public:entries')
             .on(
-                'postgres_changes',
-                { event: 'INSERT', schema: 'public', table: 'entries' },
-                (payload) => {
-                    setEntries((prev) => ({
-                        data: [...prev.data, payload.new as Entry],
-                    }));
-                }
+            'postgres_changes',
+            { event: 'INSERT', schema: 'public', table: 'entries' },
+            (payload) => {
+                setEntries((prev) => ({
+                data: [...prev.data, payload.new as Entry].sort(
+                    (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+                ),
+                }));
+            }
             )
             .subscribe();
 
