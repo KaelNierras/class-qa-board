@@ -29,13 +29,14 @@ const SessionPage = () => {
 
         const fetchEntries = async () => {
             const { data, error } = await supabase
-                .from('entries')
-                .select()
-                .eq('session_id', sessionId);
+            .from('entries')
+            .select()
+            .eq('session_id', sessionId)
+            .order('created_at', { ascending: false });
             if (error) {
-                console.error('Error fetching entries:', error);
+            console.error('Error fetching entries:', error);
             } else {
-                setEntries({ data: data as Entry[] });
+            setEntries({ data: data as Entry[] });
             }
         };
 
